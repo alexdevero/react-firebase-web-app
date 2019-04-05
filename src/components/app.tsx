@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import { auth, db } from './firebase'
+import { auth, db } from '../firebase/firebase'
 
-import logo from './logo.svg'
+import logo from './../assets/logo.svg'
 
 
 class App extends Component {
