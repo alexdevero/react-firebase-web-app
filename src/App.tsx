@@ -4,7 +4,6 @@ import { auth, db } from './firebase'
 
 import logo from './logo.svg'
 
-import './styles/App.css'
 
 class App extends Component {
   state = {
