@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-import { auth } from './firebase'
+import { auth, db } from './firebase'
 
 import logo from './logo.svg'
 
-import './App.css'
+import './styles/App.css'
 
 class App extends Component {
   state = {
@@ -12,6 +12,12 @@ class App extends Component {
     userEmail: '',
     userPassword: ''
   }
+
+  // componentDidMount() {
+    // if (window.localStorage.getItem(user).length !==0) {
+      // authenticate user with data from browser sessionStorage
+    // }
+  // }
 
   handleInputChange = (event: any) => {
     const target = event.target
@@ -22,15 +28,32 @@ class App extends Component {
   }
 
   handleSignIn = () => {
-    auth.signInWithEmailAndPassword(this.state.userEmail, this.state.userPassword).then(response => {
+    auth.signInWithEmailAndPassword(this.state.userEmail, this.state.userPassword).then((response: any) => {
+      const currentUser = {
+        email: response.user.email,
+        refreshToken: response.user.refreshToken,
+        uid: response.user.uid,
+        username: response.user.displayName
+      }
+
       this.setState({
         user: response
       })
+
+      window.sessionStorage.setItem('user', JSON.stringify(currentUser))
+
+      // db.collection('users').get().then((response: any) => {
+      //   response.forEach((query:any) => {
+      //     console.log(query)
+      //   })
+      // }).catch((error:any) => {
+      //   console.log(error.code)
+      //   console.log(error.message)
+      // })
     }).catch(error => {
       console.log(error.code)
       console.log(error.message)
     })
-
   }
 
   handleSignOut = () => {
