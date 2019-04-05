@@ -74,7 +74,11 @@ class App extends Component {
 
           {this.state.user === null && <>
             <div>
+              <label htmlFor="userEmail">Email</label>
+
               <input name="userEmail" className="login__email" onChange={this.handleInputChange} type="text"/>
+
+              <label htmlFor="userPassword">Password</label>
 
               <input name="userPassword" className="login__password" onChange={this.handleInputChange} type="password"/>
             </div>
