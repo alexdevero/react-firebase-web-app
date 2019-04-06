@@ -14,16 +14,10 @@ class App extends Component {
     isLoginScreenVisible: true,
     registerEmail: '',
     registerPassword: '',
-    user: null,
+    user: window.sessionStorage.getItem('user') !== null && window.sessionStorage.getItem('user')!.length !== 0 ? JSON.parse(window.sessionStorage.getItem('user')!) : null,
     userEmail: '',
     userPassword: ''
   }
-
-  // componentDidMount() {
-    // if (window.localStorage.getItem(user).length !==0) {
-      // authenticate user with data from browser sessionStorage
-    // }
-  // }
 
   handleInputChange = (event: any) => {
     const target = event.target
@@ -34,28 +28,20 @@ class App extends Component {
   }
 
   handleSignIn = () => {
-    auth.signInWithEmailAndPassword(this.state.userEmail, this.state.userPassword).then((response: any) => {
+    auth.signInWithEmailAndPassword(this.state.userEmail, this.state.userPassword).then((firebaseUserData: any) => {
       const currentUser = {
-        email: response.user.email,
-        refreshToken: response.user.refreshToken,
-        uid: response.user.uid,
-        username: response.user.displayName
+        email: firebaseUserData.user.email,
+        refreshToken: firebaseUserData.user.refreshToken,
+        uid: firebaseUserData.user.uid,
+        username: firebaseUserData.user.displayName
       }
 
       this.setState({
-        user: response
+        user: firebaseUserData
       })
 
+      // Sign in user locally (app will remember the user when page refreshes)
       window.sessionStorage.setItem('user', JSON.stringify(currentUser))
-
-      // db.collection('users').get().then((response: any) => {
-      //   response.forEach((query:any) => {
-      //     console.log(query)
-      //   })
-      // }).catch((error:any) => {
-      //   console.log(error.code)
-      //   console.log(error.message)
-      // })
     }).catch(error => {
       console.log(error.code)
       console.log(error.message)
@@ -82,6 +68,11 @@ class App extends Component {
       this.setState({
         user: null
       })
+
+      // Sign out user locally
+      window.sessionStorage.removeItem('user')
+
+      console.log('Sign out successful.')
     }).catch(error => {
       console.log(error.code)
       console.log(error.message)
