@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import { auth, db } from '../firebase/firebase'
 
+import { SignUpScreen } from '../views/sign-up'
+
 import logo from './../assets/logo.svg'
 
 
@@ -115,23 +117,7 @@ class App extends Component {
             <button onClick={this.handleSignIn}>Login</button>
           </>}
 
-          {this.state.user === null && !this.state.isLoginScreenVisible && <>
-            <div>
-              <h3>Create new account:</h3>
-
-              <label htmlFor="registerEmail">Email</label>
-
-              <input name="registerEmail" className="register__email" onChange={this.handleInputChange} type="text"/>
-
-              <label htmlFor="registerPassword">Password</label>
-
-              <input name="registerPassword" className="register__password" onChange={this.handleInputChange} type="password"/>
-            </div>
-
-            <p>Already have an account? <a href="#!" onClick={this.handleScreenSwitch}>Sign in.</a></p>
-
-            <button onClick={this.handleSignUp}>Register</button>
-          </>}
+          {this.state.user === null && !this.state.isLoginScreenVisible && <SignUpScreen handleInputChange={this.handleInputChange} handleScreenSwitch={this.handleScreenSwitch} handleSignUp={this.handleSignUp} />}
 
           {this.state.user !== null && <>
             <p>Welcome back 🎉!</p>
